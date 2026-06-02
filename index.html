@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Kanban Board</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">Local Kanban</p>
+          <h1>タスクボード</h1>
+        </div>
+        <div class="menu-wrap">
+          <button
+            class="menu-button"
+            id="menuButton"
+            type="button"
+            aria-label="メニューを開く"
+            aria-expanded="false"
+            aria-controls="actionMenu"
+          >
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+          <div class="actions" id="actionMenu" hidden>
+            <button class="button primary" id="newTaskButton" type="button">新規タスク</button>
+            <button class="button secondary" id="seedButton" type="button">サンプル投入</button>
+            <button class="button secondary" id="exportButton" type="button">JSON出力</button>
+            <button class="button danger" id="clearButton" type="button">全削除</button>
+          </div>
+        </div>
+      </header>
+
+      <section class="toolbar" aria-label="フィルター">
+        <label class="search">
+          <span>検索</span>
+          <input id="searchInput" type="search" placeholder="タイトル、説明、担当者で検索" />
+        </label>
+        <label>
+          <span>優先度</span>
+          <select id="priorityFilter">
+            <option value="all">すべて</option>
+            <option value="high">高</option>
+            <option value="medium">中</option>
+            <option value="low">低</option>
+          </select>
+        </label>
+        <label>
+          <span>担当者</span>
+          <input id="assigneeFilter" type="search" placeholder="例: Sato" />
+        </label>
+      </section>
+
+      <div class="view-switch" aria-label="表示形式">
+        <button class="view-button active" id="boardViewButton" type="button" aria-pressed="true">
+          カンバン
+        </button>
+        <button class="view-button" id="ganttViewButton" type="button" aria-pressed="false">
+          ガント
+        </button>
+      </div>
+
+      <main class="board" id="board" aria-label="カンバンボード"></main>
+      <main class="gantt hidden" id="gantt" aria-label="ガントチャート"></main>
+    </div>
+
+    <dialog class="task-dialog" id="taskDialog">
+      <form method="dialog" id="taskForm">
+        <div class="dialog-head">
+          <h2 id="dialogTitle">新規タスク</h2>
+          <button class="icon-button" value="cancel" type="submit" aria-label="閉じる">×</button>
+        </div>
+        <input id="taskId" type="hidden" />
+        <label>
+          <span>タイトル</span>
+          <input id="taskTitle" name="title" type="text" maxlength="80" required />
+        </label>
+        <label>
+          <span>説明</span>
+          <textarea id="taskDescription" name="description" rows="4" maxlength="400"></textarea>
+        </label>
+        <div class="form-grid">
+          <label>
+            <span>ステータス</span>
+            <select id="taskStatus" name="status">
+              <option value="todo">未対応</option>
+              <option value="progress">対応中</option>
+              <option value="review">レビュー中</option>
+              <option value="done">完了</option>
+            </select>
+          </label>
+          <label>
+            <span>優先度</span>
+            <select id="taskPriority" name="priority">
+              <option value="medium">中</option>
+              <option value="high">高</option>
+              <option value="low">低</option>
+            </select>
+          </label>
+          <label>
+            <span>担当者</span>
+            <input id="taskAssignee" name="assignee" type="text" maxlength="40" placeholder="未割当" />
+          </label>
+          <label>
+            <span>期限</span>
+            <input id="taskDueDate" name="dueDate" type="date" />
+          </label>
+        </div>
+        <div class="dialog-actions">
+          <button class="button secondary" id="deleteTaskButton" type="button">削除</button>
+          <span></span>
+          <button class="button secondary" value="cancel" type="submit">キャンセル</button>
+          <button class="button primary" id="saveTaskButton" type="submit">保存</button>
+        </div>
+      </form>
+    </dialog>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    <script src="app.js"></script>
+  </body>
+</html>
